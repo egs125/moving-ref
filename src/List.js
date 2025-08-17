@@ -1,72 +1,114 @@
+import { useState } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
+import items from './items.json'; 
 
 export default function List() {
-  const itemData = [
-    {
-      img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-      title: 'Breakfast',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-      title: 'Burger',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-      title: 'Camera',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-      title: 'Coffee',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-      title: 'Hats',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-      title: 'Honey',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-      title: 'Basketball',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-      title: 'Fern',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-      title: 'Mushrooms',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-      title: 'Tomato basil',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-      title: 'Sea star',
-    },
-    {
-      img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-      title: 'Bike',
-    },
-  ];
+  
+  const [selectedCategories, selectCategories] = useState([]);
+  const handleCategorySelect = (category) => {
+    // selectCategories((prev) =>
+    //   prev.includes(category)
+    //     ? prev.filter((c) => c !== category)
+    //     : [...prev, category]
+    // );
+    selectCategories(prev => {
+      if (prev.includes(category)) {
+        // 이미 선택된 카테고리면 제거
+        return prev.filter(c => c !== category); 
+      } else {
+        // 선택되지 않은 카테고리면 추가. 모든 카테고리 선택 시 빈 배열로 초기화
+        return prev.length === 2 ? [] : [...prev, category];
+      }
+    });
+  };
+  
+  const isSelected = category => selectedCategories.includes(category);
+
+  const filteredItems = items.filter(item => {
+    if (selectedCategories.length === 0) return true; // Show all if no category is selected
+    return selectedCategories.includes(item.category);
+  });
 
   return (
     <div className="App">
-      <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-      {itemData.map((item) => (
-        <ImageListItem key={item.img}>
-          <img
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            alt={item.title}
-            loading="lazy"
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          bgcolor: '#fff',
+          zIndex: 1000,
+          display: 'flex',
+          justifyContent: 'center',
+          py: 2, // 상하 여백
+        }}
+      >
+        <ButtonGroup variant="text" aria-label="Basic button group">
+          {/* <Button onClick={() => handleCategorySelect('A')} variant={isSelected('A') ? 'contained' : 'outlined'}>전체</Button> */}
+          <Button onClick={() => handleCategorySelect('B')} variant={isSelected('B') ? 'contained' : 'outlined'}>욕실</Button>
+          <Button onClick={() => handleCategorySelect('L')} variant={isSelected('L') ? 'contained' : 'outlined'}>스위치&조명</Button>
+          <Button onClick={() => handleCategorySelect('E')} variant={isSelected('E') ? 'contained' : 'outlined'}>ETC</Button>
+        </ButtonGroup>
+      </Box>
+      <Box sx={{ height: 72 }} />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          mt: 2,
+        }}
+      >
+        <ImageList 
+          sx={{ width: '100%', maxWidth: 606 }} 
+          cols={3} 
+          rowHeight="auto" 
+          gap={2}
+        >
+        {filteredItems.map((item) => (
+          <ImageListItem
+            key={item.img}
+            sx={{
+              position: 'relative',
+              width: '100%',
+              overflow: 'hidden',
+              aspectRatio: '1 / 1'
+            }}
+          >
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block',
+                width: '100%',
+                height: '100%',
+                aspectRatio: '1 / 1'
+              }}
+            >
+              <img
+                srcSet={`/images/${item.img}?w=400&h=400&fit=crop&auto=format&dpr=2 2x`}
+                src={`/images/${item.img}?w=400&h=400&fit=crop&auto=format`}
+                alt={item.title}
+                loading="lazy"
+                style={{
+                  cursor: 'pointer',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  aspectRatio: '1 / 1',
+                  display: 'block'
+                }}
+              />
+            </a>
+          </ImageListItem>
+        ))}
+        </ImageList>  
+      </Box>    
     </div>
   );
 }
