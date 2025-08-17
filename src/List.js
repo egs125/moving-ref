@@ -91,8 +91,8 @@ export default function List() {
               }}
             >
               <img
-                srcSet={`/images/${item.img}?w=400&h=400&fit=crop&auto=format&dpr=2 2x`}
-                src={`/images/${item.img}?w=400&h=400&fit=crop&auto=format`}
+                srcSet={`${process.env.PUBLIC_URL}/images/${item.img}?w=400&h=400&fit=crop&auto=format&dpr=2 2x`}
+                src={`${process.env.PUBLIC_URL}/images/${item.img}?w=400&h=400&fit=crop&auto=format`}
                 alt={item.title}
                 loading="lazy"
                 style={{
