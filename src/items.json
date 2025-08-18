@@ -70,5 +70,41 @@
     "category": "E",
     "img": "12.png",
     "link": "https://ohou.se/productions/3549981/selling?affect_id=2&affect_type=StoreSearchResult"
+  },
+  {
+    "id": 13,
+    "category": "L",
+    "img": "13.png",
+    "link": "http://ohou.se/productions/2137658/selling?affect_id=1&affect_type=StoreSearchResult"
+  },
+  {
+    "id": 14,
+    "category": "L",
+    "img": "14.png",
+    "link": "https://ohou.se/productions/1306096/selling?affect_type=ProductCategoryIndex"
+  },
+  {
+    "id": 15,
+    "category": "L",
+    "img": "15.png",
+    "link": "https://ohou.se/productions/1350048/selling?affect_id=14&affect_type=StoreSearchResult"
+  },
+  {
+    "id": 16,
+    "category": "L",
+    "img": "16.png",
+    "link": "https://ohou.se/productions/206897/selling"
+  },
+  {
+    "id": 17,
+    "category": "L",
+    "img": "17.png",
+    "link": "https://ohou.se/productions/3367523/selling"
+  },
+  {
+    "id": 18,
+    "category": "L",
+    "img": "18.png",
+    "link": "https://ohou.se/productions/288744/selling?affect_type=ProductCategoryIndex"
   }
 ]

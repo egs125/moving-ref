@@ -65,7 +65,7 @@ export default function List() {
       >
         <ImageList 
           sx={{ width: '100%', maxWidth: 606 }} 
-          cols={3} 
+          cols={2} 
           rowHeight="auto" 
           gap={2}
         >
