@@ -1,20 +1,21 @@
 import { useState } from 'react';
+
 import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
-import items from './items.json'; 
+
+import items from './items.json';
+
+import DetailModal from './DetailModal'; 
+import Buttons from './Buttons';
+import Item from './Item';
 
 export default function List() {
   
   const [selectedCategories, selectCategories] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+
   const handleCategorySelect = (category) => {
-    // selectCategories((prev) =>
-    //   prev.includes(category)
-    //     ? prev.filter((c) => c !== category)
-    //     : [...prev, category]
-    // );
     selectCategories(prev => {
       if (prev.includes(category)) {
         // 이미 선택된 카테고리면 제거
@@ -33,28 +34,27 @@ export default function List() {
     return selectedCategories.includes(item.category);
   });
 
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItem({});
+  };
+
+  const handleSelectItem = item => {
+    setSelectedItem(item);
+    setOpen(true);
+  }
+
   return (
     <div className="App">
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          bgcolor: '#fff',
-          zIndex: 1000,
-          display: 'flex',
-          justifyContent: 'center',
-          py: 2, // 상하 여백
-        }}
-      >
-        <ButtonGroup variant="text" aria-label="Basic button group">
-          {/* <Button onClick={() => handleCategorySelect('A')} variant={isSelected('A') ? 'contained' : 'outlined'}>전체</Button> */}
-          <Button onClick={() => handleCategorySelect('B')} variant={isSelected('B') ? 'contained' : 'outlined'}>욕실</Button>
-          <Button onClick={() => handleCategorySelect('L')} variant={isSelected('L') ? 'contained' : 'outlined'}>스위치&조명</Button>
-          <Button onClick={() => handleCategorySelect('E')} variant={isSelected('E') ? 'contained' : 'outlined'}>ETC</Button>
-        </ButtonGroup>
-      </Box>
+      <DetailModal
+        open={open}
+        handleClose={handleClose}
+        selectedItem={selectedItem}
+      />
+      <Buttons 
+        handleCategorySelect={handleCategorySelect} 
+        isSelected={isSelected}
+      />
       <Box sx={{ height: 72 }} />
       <Box
         sx={{
@@ -69,43 +69,12 @@ export default function List() {
           rowHeight="auto" 
           gap={2}
         >
-        {filteredItems.map((item) => (
-          <ImageListItem
-            key={item.img}
-            sx={{
-              position: 'relative',
-              width: '100%',
-              overflow: 'hidden',
-              aspectRatio: '1 / 1'
-            }}
-          >
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'block',
-                width: '100%',
-                height: '100%',
-                aspectRatio: '1 / 1'
-              }}
-            >
-              <img
-                srcSet={`${process.env.PUBLIC_URL}/images/${item.img}?w=400&h=400&fit=crop&auto=format&dpr=2 2x`}
-                src={`${process.env.PUBLIC_URL}/images/${item.img}?w=400&h=400&fit=crop&auto=format`}
-                alt={item.title}
-                loading="lazy"
-                style={{
-                  cursor: 'pointer',
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  aspectRatio: '1 / 1',
-                  display: 'block'
-                }}
-              />
-            </a>
-          </ImageListItem>
+        {filteredItems.map((item, idx) => (
+          <Item 
+            key={idx} 
+            item={item} 
+            handleSelectItem={handleSelectItem} 
+          /> 
         ))}
         </ImageList>  
       </Box>    
